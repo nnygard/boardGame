@@ -31,8 +31,8 @@ class App extends Component {
                     terrain = <i className="material-icons water">waves</i>;
                     else if (value.terrain==='mountain')
                     terrain = <i className="material-icons mountain">landscape</i>;
-                    else
-                    terrain = <p>{value.food} {value.production}</p>
+                    // else
+                    // terrain = <p>{value.food} {value.production}</p>
 
                     return <div key={value.index} className={className} onClick={()=>console.log(value)}>{terrain}</div>
                 })
