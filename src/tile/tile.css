@@ -1,0 +1,66 @@
+.Tile {
+  text-align: center;
+  border-style: solid;
+  border-width: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  position: relative;
+}
+
+.grass {
+  background-color: #4DBD33;
+  color: #3d9728;
+  border-color: #70ca5b;
+  background-image: linear-gradient(to right, #4DBD33 , #5ec347);
+}
+.grass.hill {
+  /* border-color: #2e711e #3d9728 #70ca5b #94d784; */
+  background-image: radial-gradient(circle, #3d9728, #70ca5b, #4DBD33);
+
+}
+
+.plains {
+  background-color: #9acd32;
+  background-image: linear-gradient(to right, #9acd32 , #a4d246);
+  color: #7ba428;
+  border-color: #aed75a;
+}
+.plains.hill {
+  /* border-color: #5c7b1e #7ba428 #aed75a #c2e184; */
+  background-image: radial-gradient(circle, #7ba428, #aed75a, #9acd32);
+}
+
+.desert {
+  background-color: #edc9af;
+  background-image: linear-gradient(to right, #edc9af , #eeceb7);
+  color:#bda08c;
+  border-color:#f0d3bf;
+}
+.desert.hill {
+  /* border-color: #8e7869 #bda08c #f0d3bf #f4decf; */
+  background-image: radial-gradient(circle, #bda08c, #f0d3bf, #edc9af);
+}
+
+.mountain {
+  background-color: #3c3c3c;
+  background-image: linear-gradient(to right, #3c3c3c , #4f4f4f);
+  color: 	#303030;
+  border-color: #626262;
+}
+
+.water {
+  background-color: #0077be;
+  background-image: linear-gradient(to right, #0077be , #1984c4);
+  color: #005f98;
+  border-color:#3292cb;
+}
+
+p.tileTooltip{
+  margin: 0;
+}
+
+p.terrainName:first-letter {
+  text-transform:capitalize;
+}

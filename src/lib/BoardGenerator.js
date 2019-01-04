@@ -1,32 +1,5 @@
-var dimension = 20;
-var terrainCompostion = {
-    'grass':5,
-    'plains':3,
-    'desert':2,
-    'mountain':2,
-    'water':2,
-}
-var hillChance = 0.25;
-var smoothThreshold = [4, 3, 2, 1];
-var smoothIterations = 50;
-var terrainYields = {
-    tile : {
-        'grass': {'food':2, 'production':0,},
-        'plains':{'food':1, 'production':1,},
-    },
-    hill : {
-        'production':1,
-    },
-    bonusToFlat: {
-        water: {'food':1},
-    },
-    bonusToHill: {
-        mountain: {'production':1},
-    },
-}
-
-export function generateBoard(){
-    var gameBoard = new board(dimension, terrainCompostion, hillChance, smoothThreshold, smoothIterations, terrainYields);
+export function generateBoard(dimension, terrainCompostion, hillChance, smoothThreshold, smoothIterations, terrainYields, opponents){
+    var gameBoard = new board(dimension, terrainCompostion, hillChance, smoothThreshold, smoothIterations, terrainYields, opponents);
     // gameBoard.smoothTerrain(smoothThreshold, smoothIterations);
     return gameBoard;
 }
@@ -101,7 +74,7 @@ class tile {
         }
     }
     mapYield(yields, board){
-        if (this.terrain!=='mountain'){
+        if (this.terrain!=='mountain' && this.terrain!=='water'){
         for (let type in yields.tile){
             if (type===this.terrain){
                 let tileBase = yields.tile[type];
@@ -143,13 +116,14 @@ class tile {
 }
 
 class board {
-    constructor(dimension = 20, compostion, hillpct, smoothThreshold, smoothIterations, terrainYields){
+    constructor(dimension = 20, compostion, hillpct, smoothThreshold, smoothIterations, terrainYields, opponents){
         this.dimension = dimension;
         this.compostion = compostion;
         this.terrainCompostion = this.mapComposition(compostion);
         this.tiles = this.generateTiles(hillpct);
         this.smoothTerrain(smoothThreshold, smoothIterations);
         this.mapYields(terrainYields);
+        this.generateSpawns(opponents);
     }
 
     mapComposition(compostion){
@@ -344,13 +318,7 @@ class board {
             this.tiles[tile].mapYield(yields, this.tiles);
         }
     }
+    generateSpawns(opponents){
+        console.log('Generate' ,opponents, 'opponents in this function')
+    }
 }
-
-
-//Terrain Types GrassLands, Plains, Dessert, Hill, Mountain, Lakes
-//GrassLands: Food 2
-//Plains: Food: 1, Production 1
-//Desert:
-//Hill: Production: +1 [Hill chance 25%] (secondary attribute of Grass, Plains, Dessert)
-//Mountain: Impasible, +1 Production to nearby tiles if hill
-//Water +1 food to surrounding tiles if not hill

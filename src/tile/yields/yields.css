@@ -1,0 +1,33 @@
+.yields {
+  opacity: 0.75;
+  margin:auto;
+  text-align: center;
+  color:black;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top:0;
+  left:0;
+  font-size: 1vh;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.yield {
+  position: relative;
+  top:1vh;
+}
+
+.food {
+  line-height: 200%;
+  height: 50%;
+  background-color: green;
+  border-radius: 100%;
+}
+
+.production {
+  line-height: 200%;
+  height: 50%;
+  background-color: orange;
+  border-radius: 100%;
+}

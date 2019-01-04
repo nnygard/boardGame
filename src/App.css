@@ -1,50 +1,18 @@
+body {
+  height: 100%;
+  width: 100%;
+  background-color: whitesmoke;
+}
+
 .App {
   text-align: center;
+  padding: 1vh 1vh 1vh 1vh;
 }
 
 .Board {
   display: grid;
-  grid-template-columns: repeat(20, auto);
-  width: 80vh;
-}
-
-.Tile {
-  text-align: center;
-  border: 1px dashed black;
-  height: 4vh;
-  width: 4vh;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-
-}
-
-.grass {
-  background-color: #4DBD33;
-
-}
-
-.plains {
-  background-color: #9acd32;
-}
-
-.desert {
-  background-color: #edc9af;
-  /* color: #f2d7c4; */
-}
-
-.mountain {
-  background-color: #3c3c3c;
-  color: 	#272727;
-}
-
-.water {
-  background-color: #0077be;
-  color: #00578b;
-}
-
-.hill {
-  /* border: 1px solid black; */
+  grid-template-columns: repeat(20, 4vh);
+  grid-template-rows: repeat(20, 4vh);
+  grid-column-gap: 0;
+  grid-row-gap: 0;
 }

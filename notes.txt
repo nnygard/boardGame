@@ -1,0 +1,12 @@
+BoardGenerator:
+- Generate Spawn locations (x players returning well distributed starting locations)
+
+Tile:
+-On hover show yields
+
+App.js:
+-Interface for manipulating map layout
+-Save state in session of map variables
+
+InfoComponent:
+- Show yields on tile hover
