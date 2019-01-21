@@ -32,7 +32,8 @@ let terrainYields = {
         mountain: {'production':1},
     },
 }
-let opponents = 4;
+let players = 4;
+let startRadius = 15;
 
 class App extends Component {
     constructor(props){
@@ -45,8 +46,8 @@ class App extends Component {
             smoothThreshold:smoothThreshold,
             smoothIterations:smoothIterations,
             terrainYields:terrainYields,
-            opponents:opponents,
-
+            players:players,
+            startRadius:startRadius,
             showYields:false,
         }
     }
@@ -64,7 +65,8 @@ class App extends Component {
                 this.state.smoothThreshold,
                 this.state.smoothIterations,
                 this.state.terrainYields,
-                this.state.opponents
+                this.state.players,
+                this.state.startRadius
             ),
         });
     }

@@ -57,6 +57,10 @@
   border-color:#3292cb;
 }
 
+.spawn{
+  border-color:red;
+}
+
 p.tileTooltip{
   margin: 0;
 }

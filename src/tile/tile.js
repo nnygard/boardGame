@@ -5,7 +5,10 @@ import './tile.css';
 import Yields from './yields/yields.js';
 class Tile extends Component {
 
-    setTerrain(terrain, hill){
+    setTerrain(terrain, hill, spawn){
+        if (spawn!==null)
+        return hill ? 'Tile '+terrain +' hill spawn' : 'Tile '+terrain+' spawn';
+        else
         return hill ? 'Tile '+terrain +' hill' : 'Tile '+terrain;
     }
     styleTerrain(terrain, hill){
@@ -18,27 +21,27 @@ class Tile extends Component {
                 }
     }
     tooltip(){
-        let food = <Icon style={{color:'green'}}>restaurant</Icon>
-        let production =<Icon style={{color:'orange'}}>gavel</Icon>
+        let key = 2;
         let tooltip = [];
-        tooltip.push(<p className='tileTooltip terrainName'>{this.props.tile.terrain}</p>)
+        tooltip.push(<p key={0} className='tileTooltip terrainName'>{this.props.tile.terrain}</p>)
         if (this.props.tile.hill)
-            tooltip.push(<p className='tileTooltip'>Hill</p>)
-        // if (this.props.tile.food || this.props.tile.production)
-        //     tooltip.push(<p className='tileTooltip'>Yields:</p>)
+            tooltip.push(<p key={1} className='tileTooltip'>Hill</p>)
         for (let i=0; i < this.props.tile.food; i++){
-          tooltip.push(food)
+          tooltip.push(<Food key={key}/>)
+          key+=1;
         }
         for (let i=0; i < this.props.tile.production; i++){
-          tooltip.push(production)
+          tooltip.push(<Production key={key}/>)
+          key+=1;
         }
         return tooltip;
     }
+
     render() {
         return (
             <Tooltip title={this.tooltip()} enterDelay={500} placement="bottom">
                 <div
-                    className={this.setTerrain(this.props.tile.terrain, this.props.tile.hill)}
+                    className={this.setTerrain(this.props.tile.terrain, this.props.tile.hill, this.props.tile.spawn)}
                     onClick={()=>console.log(this.props.tile)}>
                     {this.styleTerrain(this.props.tile.terrain, this.props.tile.hill)}
                     {this.props.showYieldsState ?
@@ -52,6 +55,14 @@ class Tile extends Component {
             </Tooltip>
         );
     }
+}
+
+function Food() {
+  return <Icon style={{color:'green'}}>restaurant</Icon>;
+}
+
+function Production(){
+    return <Icon style={{color:'orange'}}>gavel</Icon>;
 }
 
 export default Tile;

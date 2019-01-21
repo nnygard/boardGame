@@ -1,6 +1,5 @@
-export function generateBoard(dimension, terrainCompostion, hillChance, smoothThreshold, smoothIterations, terrainYields, opponents){
-    var gameBoard = new board(dimension, terrainCompostion, hillChance, smoothThreshold, smoothIterations, terrainYields, opponents);
-    // gameBoard.smoothTerrain(smoothThreshold, smoothIterations);
+export function generateBoard(dimension, terrainCompostion, hillChance, smoothThreshold, smoothIterations, terrainYields, players, startRadius){
+    var gameBoard = new board(dimension, terrainCompostion, hillChance, smoothThreshold, smoothIterations, terrainYields, players, startRadius);
     return gameBoard;
 }
 
@@ -21,6 +20,7 @@ class tile {
         this.field = null;
         this.food = 0;
         this.production = 0;
+        this.spawn = null;
     }
     mapNeighbours(north, east, south, west){
         this.north = north === null ? null : north.index;
@@ -56,9 +56,6 @@ class tile {
                     }
                 }
             }
-            // else {
-            //     return;
-            // }
         }
         else {
             this.traversed = true;
@@ -75,55 +72,55 @@ class tile {
     }
     mapYield(yields, board){
         if (this.terrain!=='mountain' && this.terrain!=='water'){
-        for (let type in yields.tile){
-            if (type===this.terrain){
-                let tileBase = yields.tile[type];
-                for (let sort in tileBase){
-                    this[sort]+=tileBase[sort];
-                }
-            }
-        }
-        let north = board[this.north] ? board[this.north].terrain : '';
-        let east = board[this.east] ? board[this.east].terrain : '';
-        let south = board[this.south] ? board[this.south].terrain : '';
-        let west = board[this.west] ? board[this.west].terrain : '';
-        let adjacent = [north, east, south, west];
-        if (this.hill){
-            for (let type in yields.hill){
-                this[type]+=yields.hill[type];
-            }
-            for (let type in yields.bonusToHill){
-                if (adjacent.indexOf(type)!==-1){
-                    let tileBase = yields.bonusToHill[type];
+            for (let type in yields.tile){
+                if (type===this.terrain){
+                    let tileBase = yields.tile[type];
                     for (let sort in tileBase){
                         this[sort]+=tileBase[sort];
                     }
                 }
             }
-        }
-        if (!this.hill){
-            for (let type in yields.bonusToFlat){
-                if (adjacent.indexOf(type)!==-1){
-                    let tileBase = yields.bonusToFlat[type];
-                    for (let sort in tileBase){
-                        this[sort]+=tileBase[sort];
+            let north = board[this.north] ? board[this.north].terrain : '';
+            let east = board[this.east] ? board[this.east].terrain : '';
+            let south = board[this.south] ? board[this.south].terrain : '';
+            let west = board[this.west] ? board[this.west].terrain : '';
+            let adjacent = [north, east, south, west];
+            if (this.hill){
+                for (let type in yields.hill){
+                    this[type]+=yields.hill[type];
+                }
+                for (let type in yields.bonusToHill){
+                    if (adjacent.indexOf(type)!==-1){
+                        let tileBase = yields.bonusToHill[type];
+                        for (let sort in tileBase){
+                            this[sort]+=tileBase[sort];
+                        }
                     }
                 }
             }
-        }
+            if (!this.hill){
+                for (let type in yields.bonusToFlat){
+                    if (adjacent.indexOf(type)!==-1){
+                        let tileBase = yields.bonusToFlat[type];
+                        for (let sort in tileBase){
+                            this[sort]+=tileBase[sort];
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 class board {
-    constructor(dimension = 20, compostion, hillpct, smoothThreshold, smoothIterations, terrainYields, opponents){
+    constructor(dimension = 20, compostion, hillpct, smoothThreshold, smoothIterations, terrainYields, players, startRadius){
         this.dimension = dimension;
         this.compostion = compostion;
         this.terrainCompostion = this.mapComposition(compostion);
         this.tiles = this.generateTiles(hillpct);
         this.smoothTerrain(smoothThreshold, smoothIterations);
         this.mapYields(terrainYields);
-        this.generateSpawns(opponents);
+        this.generateSpawns(players, startRadius);
     }
 
     mapComposition(compostion){
@@ -318,7 +315,45 @@ class board {
             this.tiles[tile].mapYield(yields, this.tiles);
         }
     }
-    generateSpawns(opponents){
-        console.log('Generate' ,opponents, 'opponents in this function')
+    generateSpawns(players, startRadius){
+        let minDistance = startRadius;
+        let spawns = [];
+        while (spawns.length !== players){
+            //Create array of indexes
+            var indexArray = [];
+            for (let i = 0; i < this.dimension*this.dimension; i++){
+                indexArray.push(i);
+            }
+            while (indexArray.length){
+                let index = indexArray[Math.floor(Math.random() * indexArray.length)];
+                indexArray.splice(indexArray.indexOf(index),1);
+                if (this.tiles[index].terrain!=='mountain' && this.tiles[index].terrain!=='water'){
+                    //Check if Close to Other selected spawns
+                    let collision =  false;
+                    if (spawns.length){
+                        for (let selected in spawns){
+                            let distance = Math.sqrt(Math.pow(Math.abs(this.tiles[index].x - spawns[selected].x),2) + Math.pow(Math.abs(this.tiles[index].y - spawns[selected].y),2));
+                            if (distance<=minDistance){
+                                collision = true;
+                            }
+                        }
+                        if (!collision){
+                            spawns.push(this.tiles[index]);
+                            break;
+                        }
+                    }
+                    else {
+                        spawns.push(this.tiles[index]);
+                    }
+                }
+            }
+            //Reduce
+            if (indexArray.length===0){
+                minDistance-=1;
+            }
+        }
+        for (let spawn in spawns){
+            this.tiles[spawns[spawn].index].spawn = parseInt(spawn);
+        }
     }
 }
