@@ -1,11 +1,18 @@
+Try implement PeerJS/ReactRouter as a communication players
+Host Button generates a WebRTC ID-link which lets players join.
+Copy link to clipboard + change url on top
+
 BoardGenerator:
 - Generate Spawn locations (x players returning well distributed starting locations)
 
 Tile:
 -Settler
+  -Model
+  -Spawn
 -City
 -Soldier/Pawn
 
 App.js:
+-Game Turns
 -Interface for manipulating map layout
 -Save state in session of map variables

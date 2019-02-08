@@ -49,7 +49,7 @@ class Tile extends Component {
                             <Yields
                                 food={this.props.tile.food}
                                 production={this.props.tile.production}
-                                />
+                            />
                         ):null}
                 </div>
             </Tooltip>

@@ -3,7 +3,11 @@ import './App.css';
 import {generateBoard} from './lib/BoardGenerator.js';
 import Tile from './tile/tile.js';
 import BoardOptions from './boardOptions/boardOptions.js';
+import Peer from 'simple-peer';
+import { useState } from 'react';
 
+
+//Simple-Peer
 
 //Default Terrain
 let dimension = 20;
@@ -98,10 +102,29 @@ class App extends Component {
                     <BoardOptions
                         showYieldsState={this.state.showYields}
                         showYieldsToggle={()=>this.showYields()}
-                    />
+                        />
+                    <Example />
                 </div>
             );
         }
+    }
+
+    function Example() {
+        // Declare a new state variable, which we'll call "count"
+        const [count, setCount] = useState(0);
+
+        function add(number){
+            setCount(count + number)
+        }
+
+        return (
+            <div>
+                <p>You clicked {count} times</p>
+                <button onClick={() => add(1)}>
+                    Click me
+                </button>
+            </div>
+        );
     }
 
     export default App;
